@@ -1,7 +1,8 @@
-from CNFClauses.index import CNF
+from CNFClauses.index import EightQueenCNF
 from Position.index import Position
+from pysat.formula import CNF
 
-class Level_1(CNF):
+class Level_1(EightQueenCNF):
     def __init__(self, size):
         super().__init__(size)
     
@@ -11,7 +12,7 @@ class Level_1(CNF):
     def __getPosIn1DArray(self, position: Position) -> int:
         return position.x * self.size + position.y
 
-    def getClausesAt(self, position: Position):
+    def getClausesAt(self, position: Position) -> CNF().clauses:
         if not position.validate(self.size):
             return []
         

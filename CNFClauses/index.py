@@ -1,9 +1,10 @@
 from abc import ABC,abstractmethod
+from pysat.formula import CNF
 
-class CNF(ABC):
+class EightQueenCNF(ABC):
     def __init__(self,size):
         self.size = size
-        self.resolutions = []
+        self.resolutions = CNF()
 
     @abstractmethod
     def getClausesAt(self,x,y):
