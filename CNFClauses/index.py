@@ -3,8 +3,9 @@ from abc import ABC,abstractmethod
 class CNF(ABC):
     def __init__(self,size):
         self.size = size
+        self.resolutions = []
 
     @abstractmethod
-    def getClauses(self,x,y):
+    def getClausesAt(self,x,y):
         pass
 
