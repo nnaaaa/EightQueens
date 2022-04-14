@@ -12,6 +12,9 @@ class Level_1(EightQueenCNF):
     def __getPosIn1DArray(self, position: Position) -> int:
         return position.x * self.size + position.y
 
+    def addClausesAt(self, position: Position):
+        pass
+
     def getClausesAt(self, position: Position) -> CNF().clauses:
         if not position.validate(self.size):
             return []
@@ -54,6 +57,7 @@ class Level_1(EightQueenCNF):
                 self.resolutions.append([-self.__getPosIn1DArray(position),-self.__getPosIn1DArray(startForwardDiagonal)])
             startForwardDiagonal.forwardDiagonalIncrease()
 
+        # resolutions is [Tuple[int,int]]
         return self.resolutions
 
 
