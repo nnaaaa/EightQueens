@@ -1,7 +1,8 @@
-from Solver.sat import SATSolver
+from Solver.sat.index import SATSolver
+from Solver.astar.index import AStarSolver
 from Solver.sat.Clauses.level_1 import FirstLevel
 
-level = FirstLevel(10)
-solver = SATSolver(level)
+level = FirstLevel(3)
+solver = AStarSolver(level)
 
 solver.solve()
