@@ -1,5 +1,3 @@
-
-from random import randint
 from typing import List
 from Position.index import Position
 from copy import deepcopy
@@ -18,37 +16,40 @@ class State:
         else:
             self.gvalue = 0
 
+    def action(self,currentQueen:int,value:int):
+        successor = deepcopy(self)
+        successor.board[currentQueen] = value
+        successor.father = self
+        successor.id = uuid4()
+        successor.hvalue = successor.getHeuristicValue()
+        successor.gvalue = successor.gvalue + 1
+        return successor
+
     def generateSuccessors(self,initPos,currentPos):
         successors:List[State] = []
         boardSize = len(self.board)
-        for i in range(boardSize):
-            if self.board[i] == -1:
-                for j in range(boardSize*boardSize):
-                    if j+1 in self.board:
-                        continue
-                    successor = deepcopy(self)
-                    successor.id = uuid4()
-                    successor.board[i] = j + 1
-                    successor.father = self
-                    successor.hvalue = successor.getHeuristicValue()
-                    successor.gvalue = successor.gvalue + 1
-                    successors.append(successor)
 
+        #move queen when entire queens placed
         if not -1 in self.board:
             for j in range(boardSize*boardSize):
                 if j+1 in self.board:
                     continue
-                successor = deepcopy(self)
-                successor.board[currentPos] = j + 1
-                successor.father = self
-                successor.id = uuid4()
-                successor.hvalue = successor.getHeuristicValue()
-                successor.gvalue = successor.gvalue + 1
+                successor = self.action(currentPos,j+1)
                 successors.append(successor)
 
             currentPos += 1
             if currentPos == boardSize:
                 currentPos = initPos
+
+        else:
+            #any queens haven't placed in the board yet
+            for i in range(boardSize):
+                if self.board[i] == -1:
+                    for j in range(boardSize*boardSize):
+                        if j+1 in self.board:
+                            continue
+                        successor = self.action(i,j+1)
+                        successors.append(successor)
 
         return successors
 

@@ -1,4 +1,6 @@
-from GUI.chessBoard import printChessBoard
+from IO.chessBoard import printChessBoard
+from IO.queen import Queen
+
 from Solver.astar.state import State
 from Solver.astar.frontier import Frontier
 from Solver.sat.Clauses.index import Level
@@ -6,27 +8,28 @@ from Solver.index import QueenSolver
 
 class AStarSolver(QueenSolver):
     def __init__(self,level: Level):
+        super().__init__()
+        self.graphic = None
         self.__frontier = Frontier()
         self.__expendedStates = Frontier()
-        self.__root = State([9,2,-1,-1])
+        self.__root = State(Queen.readQueenFromFile(level.size))
         self.initQueenPos = 1
         self.currentQueenPos = self.initQueenPos 
+        self.__frontier.push(self.__root)
+        self.isSolved = False
     
     def solve(self):
-        self.__frontier = Frontier()
-        self.__expendedStates = Frontier()
-        self.__frontier.push(self.__root)
-
-        while not self.__frontier.isEmpty():
+        if not self.__frontier.isEmpty() and self.isSolved == False:
             currentNode = self.__frontier.putStateWithLowestFValue()
             self.__expendedStates.push(currentNode)
-            # print(currentNode.getHeuristicValue(),end=' ')
-            # print(currentNode.gvalue)
-            # printChessBoard(currentNode.board)
-            # print("\n")
+
+            if self.graphic:
+                self.graphic.changeQueen(currentNode.board)
+
             if currentNode.getHeuristicValue() == 0 and not -1 in currentNode.board:
+                self.isSolved = True
                 printChessBoard(currentNode.board)
-                return currentNode
+                return
 
             for successor in currentNode.generateSuccessors(self.initQueenPos,self.currentQueenPos):
                 if self.__expendedStates.isExist(successor):
@@ -39,6 +42,10 @@ class AStarSolver(QueenSolver):
                         self.__frontier.push(successor)
                 else:
                     self.__frontier.push(successor)
+
+        #print("Solution hasn't found")
+        
+
 
 
 

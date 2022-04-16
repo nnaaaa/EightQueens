@@ -1,4 +1,4 @@
-from GUI.chessBoard import writeFile
+from IO.chessBoard import writeFile
 from Solver.sat.Clauses.index import Level
 from Position.index import Position
 

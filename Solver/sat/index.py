@@ -1,12 +1,13 @@
 from pysat.solvers import Solver,Glucose3,Lingeling
 from Solver.sat.Clauses.index import Level
-from GUI.chessBoard import printChessBoard
+from IO.chessBoard import printChessBoard
 from Solver.index import QueenSolver
 
 class SATSolver(QueenSolver):
     def __init__(self,level: Level):
+        super().__init__()
+
         self.__clauses = level
-        
         self.__solver = Lingeling(bootstrap_with=self.__clauses.getClauses(),with_proof=True)
         self.__queens = []
 
