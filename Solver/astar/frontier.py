@@ -23,13 +23,20 @@ class Frontier:
             if not stateWithLowestFValue:
                 stateWithLowestFValue = state
             else:
-                lowestFValue = stateWithLowestFValue.gvalue + stateWithLowestFValue.hvalue
-                fvalue = state.gvalue + state.hvalue
+                lowestFValue = stateWithLowestFValue.gvalue + stateWithLowestFValue.getHeuristicValue()
+                fvalue = state.gvalue + state.getHeuristicValue()
                 if fvalue < lowestFValue:
                     stateWithLowestFValue = state
 
         self.__list.remove(stateWithLowestFValue)
         return stateWithLowestFValue
+
+    def isExist(self,state:State):
+        node = self.findById(state.id)
+        if node:
+            return True
+        else:
+            return False
 
     def findById(self,id:UUID):
         for node in self.__list:

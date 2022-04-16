@@ -5,49 +5,11 @@ from Position.index import Position
 
 class FirstLevel(Level):
     def initClauses(self):
-        # exactly one queen at one row
-        # for i in range(self.size):
-        #     # literal = []
-        #     # for j in range(self.size):
-        #     #     pos = Position(i, j)
-        #     #     literal.append(Position.getPosIn1DArray(pos, self.size))
+        self.rowConstraints()
+        self.columnConstraints()
+        self.forwardDiagonalConstraints()
+        self.backDiagonalConstraints()
 
-        #     self.cnf.append(
-        #         [i for i in range(i*self.size + 1, i*self.size + self.size + 1)])
-
-        # # exactly one queen at one column
-        # for i in range(self.size):
-        #     literal = []
-        #     for j in range(self.size):
-        #         pos = Position(j, i)
-        #         literal.append(Position.getPosIn1DArray(pos, self.size))
-
-        #     self.cnf.append(literal)
-
-        
-        # self.rowConstraints()
-        # self.columnConstraints()
-        # #self.diagonalConstraints()
-        # for i in range(self.size):
-        #     for j in range(self.size):
-        #         pos = Position(i, j)
-        #         print(f"at ({pos.x},{pos.y})")
-        #         print("forward")
-        #         self.forwardDiagonalConstraintAt(pos)
-        #         print("backward")
-        #         self.backDiagonalConstraintAt(pos)
-
-        
-        restrictions = []
-        for i in range(self.size):
-            current=[i for i in range(i*self.size+1,i*self.size+self.size+1)]
-            restrictions.append(current)
-        for i in range(self.size*self.size):
-            for j in range(self.size*self.size):
-                if (i!=j)and((j % self.size == i %self.size) or (j // self.size == i // self.size) or (abs(i//self.size-j//self.size)==abs(i%self.size-j%self.size))):
-                    restrictions.append([-1*(i+1),(j+1)*-1])
-
-        self.cnf.extend(restrictions)
         self.cnf.to_file("clauses.txt")
 
     def rowConstraints(self):
@@ -90,50 +52,27 @@ class FirstLevel(Level):
     #                             Position.getPosIn1DArray(startColumn, self.size)])
     #         startColumn.columnIncrease()
 
-    def backDiagonalConstraintAt(self, position: Position):
-        a = []
-        startBackDiagonal: Position
-        if position.x >= position.y:
-            startBackDiagonal = Position(position.x - position.y, 0)
-        else:
-            startBackDiagonal = Position(0, position.y - position.x)
+    def backDiagonalConstraints(self):
+        for i in range(self.size):
+            for j in range(self.size):
+                startBackDiagonal = Position(j, i)
+                nextStart = Position(startBackDiagonal.x + 1,startBackDiagonal.y + 1)
+                while nextStart.validate(self.size):
+                    literal = [-Position.getPosIn1DArray(nextStart, self.size), -Position.getPosIn1DArray(startBackDiagonal, self.size)]
+                    if not self.isExistInClauses(literal):
+                        self.cnf.append(literal)
+                    nextStart.backDiagonalIncrease()
 
-        while startBackDiagonal.validate(self.size):
-            if not startBackDiagonal == position:
-                literal = [-Position.getPosIn1DArray(position, self.size), -Position.getPosIn1DArray(startBackDiagonal, self.size)]
-                if not self.isExistInClauses(literal):
-                    a.append([Position.getPosIn1DArray(position, self.size), Position.getPosIn1DArray(startBackDiagonal, self.size)])
-                    self.cnf.append(literal)
-            startBackDiagonal.backDiagonalIncrease()
 
-        for c in a:
-            for i in c:
-                pos = Position.getPosIn2DArray(i,self.size)
-                print(f"({pos.x},{pos.y})",end=' ')
-            print("\n")
-        print("\n")
 
-    def forwardDiagonalConstraintAt(self, position: Position):
-        a = []
-        startForwardDiagonal: Position
-        if position.x >= self.size - position.y:
-            startForwardDiagonal = Position(
-                self.size - 1, position.x - position.y)
-        else:
-            startForwardDiagonal = Position(
-                self.size - 1 - (self.size - 1 - position.y - position.x), 0)
+    def forwardDiagonalConstraints(self):
+        for i in range(self.size):
+            for j in range(self.size):
+                startForwardDiagonal = Position(j, i)
+                nextStart = Position(startForwardDiagonal.x - 1,startForwardDiagonal.y + 1)
+                while nextStart.validate(self.size):
+                    literal = [-Position.getPosIn1DArray(nextStart, self.size), -Position.getPosIn1DArray(startForwardDiagonal, self.size)]
+                    if not self.isExistInClauses(literal):
+                        self.cnf.append(literal)
+                    nextStart.forwardDiagonalIncrease()
 
-        while startForwardDiagonal.validate(self.size):
-            if not startForwardDiagonal == position:
-                literal = [-Position.getPosIn1DArray(position, self.size), -Position.getPosIn1DArray(startForwardDiagonal, self.size)]
-                if not self.isExistInClauses(literal):
-                    a.append([Position.getPosIn1DArray(position, self.size), Position.getPosIn1DArray(startForwardDiagonal, self.size)])
-                    self.cnf.append(literal)
-            startForwardDiagonal.forwardDiagonalIncrease()
-
-        for c in a:
-            for i in c:
-                pos = Position.getPosIn2DArray(i,self.size)
-                print(f"({pos.x},{pos.y})",end=' ')
-            print("\n")
-        print("\n")

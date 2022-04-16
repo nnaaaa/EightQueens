@@ -10,9 +10,6 @@ class SATSolver(QueenSolver):
         self.__solver = Lingeling(bootstrap_with=self.__clauses.getClauses(),with_proof=True)
         self.__queens = []
 
-    def __del__(self):
-        self.__solver.delete()
-
     def solve(self):
         # for clau in self.__clauses.getClauses():
         #     print(clau)

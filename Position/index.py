@@ -18,6 +18,14 @@ class Position:
         self.x -= 1
         self.y += 1
 
+    def backDiagonalDecrease(self):
+        self.x -= 1
+        self.y -= 1
+
+    def forwardDiagonalDecrease(self):
+        self.x += 1
+        self.y -= 1
+
     def rowIncrease(self):
         self.y += 1
     

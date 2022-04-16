@@ -6,7 +6,7 @@ def printChessBoard(queens: List[int]):
 
     for i in range(boardSize):
         for j in range(boardSize):
-            pos = Position(i,j)
+            pos = Position(j,i)
             hasQueen = False
             for z in range(boardSize):
                 chess = Position.getPosIn2DArray(queens[z],boardSize)
