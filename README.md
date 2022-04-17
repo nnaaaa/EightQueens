@@ -1,6 +1,14 @@
 # 8 queens
 
 ## How to use
+
+> Download python version 3.9 or lower
+> Install pip 
+
+```
+pip install pygame python-sat numpy
+```
+
 ```
 git clone https://github.com/nnaaaa/EightQueens.git
 ```
