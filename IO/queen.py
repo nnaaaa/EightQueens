@@ -1,12 +1,14 @@
 from Position.index import Position
 import pygame
+from pygame import Surface
+from typing import List
 
 class Queen:
     def __init__(self,position: Position):
         self.image = pygame.transform.scale(pygame.image.load("IO/images/queen.png"),(64,64))
         self.position = position
 
-    def display(self,screen):
+    def display(self,screen:Surface):
         screen.blit(self.image, (self.position.x * 64, self.position.y * 64))
 
     @staticmethod

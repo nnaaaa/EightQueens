@@ -25,6 +25,16 @@ class Level(ABC):
 
         return False
 
+    def printClauses(self):
+        for clause in self.cnf.clauses:
+            for i in range(len(clause)):
+                if i == 0:
+                    print('(',clause[i],end=' U ')
+                elif i == len(clause) - 1:
+                    print(clause[i],end=') ⋂\n')
+                else:
+                    print(clause[i],end=' U ')
+            
 
 
     @abstractmethod

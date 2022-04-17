@@ -1,6 +1,6 @@
 from pysat.solvers import Solver,Glucose3,Lingeling
 from Solver.sat.Clauses.index import Level
-from IO.chessBoard import printChessBoard
+from IO.chessBoard import ChessBoard
 from Solver.index import QueenSolver
 
 class SATSolver(QueenSolver):
@@ -30,25 +30,23 @@ class SATSolver(QueenSolver):
         #         printChessBoard(n)
         self.__queens = []
         if self.__solver.solve() == False:
-            print("Failed, proof:", self.__solver.get_proof())
+            print("This clauses can't be solved, proof:", self.__solver.get_proof())
         else:
-            print("Success")
-            # queens = []
-            # for v in self.__solver.get_model():
-            #     if v > 0:
-            #         queens.append(v)
+            print("Solved")
+            for v in self.__solver.get_model():
+                self.__queens.append(v)
 
-            # printChessBoard(queens,self.__clauses)
-            i = 1
-            for m in self.__solver.enum_models():
-                self.__queens = []
-                print(f"Solution {i}")
-                i+=1
-                for v in m:
-                    if v > 0:
-                        self.__queens.append(v)
+            print(self.__queens)
+            # i = 1
+            # for m in self.__solver.enum_models():
+            #     self.__queens = []
+            #     print(f"Solution {i}")
+            #     i+=1
+            #     for v in m:
+            #         if v > 0:
+            #             self.__queens.append(v)
                 
-                printChessBoard(self.__queens)
+            #     ChessBoard.printChessBoard(self.__queens)
 
 
 
