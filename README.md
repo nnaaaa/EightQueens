@@ -1,3 +1,19 @@
+# 8 queens
+
+## How to use
+```
+git clone https://github.com/nnaaaa/EightQueens.git
+```
+<br>
+
+```
+make
+```
+
+## Experience
+
+> At the moment that i perform this project, installing "python-sat" will raise error when my python version is 3.10. So i suggest you to install python 3.9
+
 basic knowledge about python: https://www.w3schools.com/python/default.asp <br>
 basic knowledge about SAT: http://www.sfu.ca/~tjd/310summer2019/chp7_proplogic.html <br>
 example solution use or-tools (but we use pysat): https://developers.google.com/optimization/cp/queens <br>
