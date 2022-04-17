@@ -1,5 +1,5 @@
 from IO.queen import Queen
-
+from typing import List
 from Solver.astar.state import State
 from Solver.astar.frontier import Frontier
 from Solver.sat.Clauses.index import Level
@@ -7,12 +7,12 @@ from Solver.index import QueenSolver
 from IO.chessBoard import ChessBoard
 
 class AStarSolver(QueenSolver):
-    def __init__(self,level: Level):
+    def __init__(self,initQueens:List[int] = [-1,-1,-1,-1,-1,-1,-1,-1]):
         super().__init__()
         self.graphic = None
         self.__frontier = Frontier()
         self.__expendedStates = Frontier()
-        self.__root = State(Queen.readQueenFromFile(level.size))
+        self.__root = State(initQueens)
         self.initQueenPos = 1
         self.currentQueenPos = self.initQueenPos 
         self.__frontier.push(self.__root)

@@ -12,8 +12,8 @@ class Queen:
         screen.blit(self.image, (self.position.x * 64, self.position.y * 64))
 
     @staticmethod
-    def readQueenFromFile(sizeBoard:int):
-        f = open("input.txt","r")
+    def readQueenFromFile(sizeBoard:int,filename = "input.txt"):
+        f = open(filename,"r")
         numberOfQueens = int(f.readline())
         queens = [-1 for i in range(sizeBoard - numberOfQueens)]
         locationList = f.read().split()
