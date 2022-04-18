@@ -28,7 +28,7 @@ class ChessBoard:
                         hasQueen = True
 
                 if hasQueen == False:
-                    print('_',end=' ')
+                    print('.',end=' ')
             
             print('\n')
 

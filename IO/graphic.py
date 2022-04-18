@@ -2,12 +2,15 @@ import pygame
 from typing import List
 from IO.chessBoard import ChessBoard
 from IO.queen import Queen
+from IO.button import Button
 from Solver.index import QueenSolver
 from Position.index import Position
-from Solver.astar.index import AStarSolver
 from pygame import Surface
 import tkinter
 import tkinter.filedialog
+from Solver.sat.index import SATSolver
+from Solver.astar.index import AStarSolver
+from Solver.sat.Clauses.level_2 import SecondLevel
 
 class Graphic:
     def __init__(self,chessBoard: ChessBoard):
@@ -17,20 +20,23 @@ class Graphic:
         self.queenClasses = []
         self.queenPosition = []
         
+        self.isChosedFile = False
         self.isStartSolve = False
-        self.changeQueen(self.queenPosition)
+        self.isChosedSolver = False
 
     def display(self):
         pygame.init()
-        screen = pygame.display.set_mode((self.chessBoard.size*64,self.chessBoard.size*67 + 64))
+        screen = pygame.display.set_mode((self.chessBoard.size*64,self.chessBoard.size*64 + 260))
         pygame.display.set_caption("8 queens")
         icon = pygame.image.load("IO/images/icon.png")
         pygame.display.set_icon(icon)
 
-        self.startSolveButton = Button("Start Solve",[255, 255, 255],[22,135,204],8*32,8*64 + 10,100,30)
-        self.solvedButton = Button("Solved",[255, 255, 255],[216,147,43],8*32,8*64 + 10,100,30)
-        self.cannotSolvedButton = Button("Can't be solved",[255, 255, 255],[172,71,71],8*32,8*64 + 10,100,30)
-        self.choseFileButton = Button("Chose your input",[255, 255, 255],[22,135,204],8*32,8*64 + 50,100,30)
+        self.astarSolveButton = Button("Chose A*",[255, 255, 255],[22,135,204],8*32,8*64 + 10,100,30)
+        self.satSolveButton = Button("Chose SAT",[255, 255, 255],[22,135,204],8*32,8*64 + 50,100,30)
+        self.solvedButton = Button("Solved",[255, 255, 255],[22,135,204],8*32,8*64 + 90,100,30)
+        self.cannotSolvedButton = Button("Can't be solved",[255, 255, 255],[172,71,71],8*32,8*64 + 130,100,30)
+        self.startSolveButton = Button("Start solve",[255, 255, 255],[22,135,204],8*32,8*64 + 170,100,30)
+        self.choseFileButton = Button("Chose your input",[255, 255, 255],[22,135,204],8*32,8*64 + 210,100,30)
 
         
         while self.isRunning:
@@ -47,19 +53,34 @@ class Graphic:
             for queenClass in self.queenClasses:
                 queenClass.display(screen)
 
-            self.choseFileButton.display(screen)
 
-            if self.solver:
-                self.solver.setGraphic(self)
-                if self.isStartSolve:
-                    self.solver.solve()
-                if not self.solver.isSolved:
-                    self.startSolveButton.display(screen)
+            if not self.isChosedFile:
+                self.choseFileButton.display(screen)
+            else:
 
-                if self.solver.isSolved:
-                    self.solvedButton.display(screen)
-                elif self.solver.cannotSolved:
-                    self.cannotSolvedButton.display(screen)
+                if self.solver:
+                    if not self.solver.graphic:
+                        self.solver.setGraphic(self)
+
+                    if self.isStartSolve:
+                        self.solver.solve()
+
+                    if self.isChosedSolver:
+                        self.startSolveButton.display(screen)
+
+                    if self.solver.cannotSolved:
+                        self.cannotSolvedButton.display(screen)
+                    elif self.solver.isSolved:
+                        self.solvedButton.display(screen)
+
+                        
+                                
+                else:
+                    if not self.isStartSolve:
+                        self.astarSolveButton.display(screen)
+                        self.satSolveButton.display(screen)
+                    
+                    
 
                 
 
@@ -86,30 +107,36 @@ class Graphic:
         return file_name
 
     def onClick(self,pos):
+        if pygame.Rect.collidepoint(self.astarSolveButton.rect, pos):
+            self.solver = AStarSolver(self.queenPosition)
+            self.isChosedSolver = True
+
+        if pygame.Rect.collidepoint(self.satSolveButton.rect, pos):
+            level = SecondLevel(self.chessBoard.size)
+            level.printClauses()
+            self.solver = SATSolver(level,self.queenPosition)
+            self.isChosedSolver = True
+
         if pygame.Rect.collidepoint(self.startSolveButton.rect, pos):
             self.isStartSolve = not self.isStartSolve
 
+        if pygame.Rect.collidepoint(self.solvedButton.rect, pos):
+            self.setSolver(None)
+            self.isChosedFile = False
+            self.isStartSolve = False
+            self.isChosedSolver = False
+
         if pygame.Rect.collidepoint(self.choseFileButton.rect, pos):
+            self.isChosedFile = True
             filename = self.choseFile()
             if filename:
                 queens = Queen.readQueenFromFile(self.chessBoard.size,filename)
                 self.changeQueen(queens)
-                astarSolver = AStarSolver(queens)
-                self.setSolver(astarSolver)
+                # astarSolver = AStarSolver(queens)
+                # self.setSolver(astarSolver)
     
 
-class Button:
-    def __init__(self,text,textColor,buttonColor,x,y,width,height):
-        self.font = pygame.font.SysFont("Arial", 14)
-        self.rect = pygame.Rect(x-width/2,y,width,height)
-        self.text = self.font.render(text, 1, textColor)
-        self.realText = text
-        self.color = buttonColor
 
-    def display(self,screen:Surface):
-        pygame.draw.rect(screen,self.color,self.rect)
-        width,height = pygame.font.Font.size(self.font, self.realText)
-        screen.blit(self.text, (self.rect.centerx-width/2, self.rect.centery-height/2))
 
 
 

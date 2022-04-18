@@ -25,7 +25,7 @@ while True:
     print("'c' '2' Write CNF clauses with full restrictions (row,column,diagonal) to clauses.txt")
     print("'d' Print a set of satisfied values from CNF clauses writed by 'c'")
     print("'e' Solve 8 queen by A star and print out. Input file name 'input.txt'")
-    print("'f' Visualize A star by GUI. You can chose input or use our default 'input.txt'")
+    print("'f' Visualize A star and SAT by GUI. You can chose input or use our default 'input.txt'")
     print("'q' Quit")
     print("Which question you want?",end=' ')
     chose = input()

@@ -12,17 +12,14 @@ class State:
         self.father = father
 
         if father:
-            self.gvalue = father.gvalue
+            self.gvalue = father.gvalue + 1
         else:
             self.gvalue = 0
 
     def action(self,currentQueen:int,value:int):
-        successor = deepcopy(self)
-        successor.board[currentQueen] = value
-        successor.father = self
-        successor.id = uuid4()
-        successor.hvalue = successor.getHeuristicValue()
-        successor.gvalue = successor.gvalue + 1
+        board = deepcopy(self.board)
+        board[currentQueen] = value
+        successor = State(board,self)
         return successor
 
     def generateSuccessors(self,initPos,currentPos):
@@ -41,8 +38,8 @@ class State:
             if currentPos == boardSize:
                 currentPos = initPos
 
+        #any queens haven't placed in the board yet
         else:
-            #any queens haven't placed in the board yet
             for i in range(boardSize):
                 if self.board[i] == -1:
                     for j in range(boardSize*boardSize):

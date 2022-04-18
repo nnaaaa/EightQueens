@@ -41,7 +41,7 @@ class AStarSolver(QueenSolver):
                     if successor.gvalue < nodeInFrontier.gvalue:
                         self.__frontier.remove(nodeInFrontier)
                         self.__frontier.push(successor)
-                else:
+                if not self.__frontier.isExist(successor) and not self.__expendedStates.isExist(successor):
                     self.__frontier.push(successor)
 
         if self.__frontier.isEmpty() and self.isSolved == False:

@@ -8,8 +8,6 @@ class FirstLevel(Level):
         self.forwardDiagonalConstraints()
         self.backDiagonalConstraints()
 
-        self.cnf.to_file("clauses.txt")
-
     def rowConstraints(self):
         for rowIndex in range(self.size):
             self.cnf.append(
