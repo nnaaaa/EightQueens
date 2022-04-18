@@ -26,14 +26,20 @@ class Level(ABC):
         return False
 
     def printClauses(self):
+        f = open("clauses.txt","w")
         for clause in self.cnf.clauses:
             for i in range(len(clause)):
                 if i == 0:
-                    print('(',clause[i],end=' U ')
+                    print('(',clause[i],end=' V ')
+                    f.write('('+str(clause[i])+' V ')
                 elif i == len(clause) - 1:
-                    print(clause[i],end=') ⋂\n')
+                    print(clause[i],end=')\n')
+                    f.write(str(clause[i])+')\n')
                 else:
-                    print(clause[i],end=' U ')
+                    print(clause[i],end=' V ')
+                    f.write(str(clause[i])+' V ')
+
+        
             
 
 

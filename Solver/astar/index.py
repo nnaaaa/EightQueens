@@ -13,7 +13,8 @@ class AStarSolver(QueenSolver):
         self.__frontier = Frontier()
         self.__expendedStates = Frontier()
         self.__root = State(initQueens)
-        self.initQueenPos = 1
+        self.initQueenPos = self.lastPosQueen(initQueens)
+        
         self.currentQueenPos = self.initQueenPos 
         self.__frontier.push(self.__root)
     
@@ -44,7 +45,15 @@ class AStarSolver(QueenSolver):
                     self.__frontier.push(successor)
 
         if self.__frontier.isEmpty() and self.isSolved == False:
+            self.cannotSolve = True
             print("This problem can't be solved")
+
+    def lastPosQueen(self,queens:List[int]):
+        for i in range(len(queens)):
+            if queens[i] == -1:
+                return i
+
+        return len(queens)
         
 
 

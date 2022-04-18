@@ -33,10 +33,17 @@ class SATSolver(QueenSolver):
             print("This clauses can't be solved, proof:", self.__solver.get_proof())
         else:
             print("Solved")
-            for v in self.__solver.get_model():
-                self.__queens.append(v)
+            model = self.__solver.get_model()
+            for v in model:
+                if v > 0:
+                    self.__queens.append(v)
 
+            print("\nFull variables")
+            print(model)
+            print("\nValid queens")
             print(self.__queens)
+            print("\nFor more observable")
+            ChessBoard.printChessBoard(self.__queens)
             # i = 1
             # for m in self.__solver.enum_models():
             #     self.__queens = []
@@ -46,7 +53,7 @@ class SATSolver(QueenSolver):
             #         if v > 0:
             #             self.__queens.append(v)
                 
-            #     ChessBoard.printChessBoard(self.__queens)
+            
 
 
 

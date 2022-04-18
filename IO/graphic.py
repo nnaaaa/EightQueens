@@ -9,7 +9,6 @@ from pygame import Surface
 import tkinter
 import tkinter.filedialog
 
-
 class Graphic:
     def __init__(self,chessBoard: ChessBoard):
         self.solver = None
@@ -30,15 +29,14 @@ class Graphic:
 
         self.startSolveButton = Button("Start Solve",[255, 255, 255],[22,135,204],8*32,8*64 + 10,100,30)
         self.solvedButton = Button("Solved",[255, 255, 255],[216,147,43],8*32,8*64 + 10,100,30)
+        self.cannotSolvedButton = Button("Can't be solved",[255, 255, 255],[172,71,71],8*32,8*64 + 10,100,30)
         self.choseFileButton = Button("Chose your input",[255, 255, 255],[22,135,204],8*32,8*64 + 50,100,30)
 
         
-            
         while self.isRunning:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT: 
                     self.isRunning = False
-                    print("Quit")
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
                     self.onClick(pos)
@@ -57,12 +55,17 @@ class Graphic:
                     self.solver.solve()
                 if not self.solver.isSolved:
                     self.startSolveButton.display(screen)
+
                 if self.solver.isSolved:
                     self.solvedButton.display(screen)
+                elif self.solver.cannotSolved:
+                    self.cannotSolvedButton.display(screen)
+
                 
 
             pygame.display.update()
-        pygame.display.flip()
+        #pygame.display.flip()
+        pygame.quit()
 
     def setSolver(self,solver: QueenSolver):
         self.solver = solver
