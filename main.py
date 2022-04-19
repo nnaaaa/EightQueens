@@ -47,8 +47,7 @@ while True:
         satSolver.solve()
 
     if chose == "e":
-        level = SecondLevel(size)
-        astarSolver = AStarSolver(level)
+        astarSolver = AStarSolver()
         print("Solving ...")
         while not astarSolver.isSolved:
             astarSolver.solve()
