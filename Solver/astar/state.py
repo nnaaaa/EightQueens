@@ -8,13 +8,14 @@ class State:
         self.board = board
         self.id = uuid4()
         
-        self.hvalue = self.getHeuristicValue()
         self.father = father
+        self.hvalue = 99999
 
         if father:
             self.gvalue = father.gvalue + 1
         else:
             self.gvalue = 0
+
 
     def action(self,currentQueen:int,value:int):
         board = deepcopy(self.board)
@@ -24,7 +25,7 @@ class State:
 
     def generateSuccessors(self,initPos,currentPos):
         successors:List[State] = []
-        boardSize = len(self.board)
+        boardSize = self.board.__len__()
 
         #move queen when entire queens placed
         if not -1 in self.board:
@@ -51,7 +52,7 @@ class State:
         return successors
 
     def __isSameDiagonal(self,firstQueen:Position,secondQueen:Position):
-        boardSize = len(self.board)
+        boardSize = self.board.__len__()
         forwardPoint = deepcopy(firstQueen)
         while forwardPoint.validate(boardSize):
             if forwardPoint == secondQueen:

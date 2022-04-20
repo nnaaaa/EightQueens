@@ -48,8 +48,8 @@ class AStarSolver(QueenSolver):
             self.cannotSolve = True
             print("This problem can't be solved")
 
-    def lastPosQueen(self,queens:List[int]):
-        for i in range(len(queens)):
+    def lastPosQueen(self,queens):
+        for i in range(queens.__len__()):
             if queens[i] == -1:
                 return i
 
