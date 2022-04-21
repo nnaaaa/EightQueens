@@ -4,6 +4,7 @@ from Solver.sat.Clauses.level_1 import FirstLevel
 from Solver.sat.Clauses.level_2 import SecondLevel
 from IO.graphic import Graphic
 from IO.chessBoard import ChessBoard
+from IO.queen import Queen
 from Solver.sat.Clauses.index import Level
 from Position.index import Position
 from os import environ
@@ -56,7 +57,8 @@ while True:
         satSolver.solve()
 
     if chose == "e":
-        astarSolver = AStarSolver()
+        initQueens = Queen.readQueenFromFile(8)
+        astarSolver = AStarSolver(initQueens)
         print("Solving ...")
         while not astarSolver.isSolved:
             astarSolver.solve()
