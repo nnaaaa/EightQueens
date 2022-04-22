@@ -9,7 +9,7 @@ class SATSolver(QueenSolver):
         super().__init__()
 
         self.__clauses = level
-        self.__solver = Lingeling(bootstrap_with=self.__clauses.getClauses(),with_proof=True)
+        self.__solver = Glucose3(bootstrap_with=self.__clauses.getClauses(),with_proof=True)
         for queen in initQueens:
             if queen > 0:
                 self.__solver.add_clause([queen])
