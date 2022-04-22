@@ -54,7 +54,7 @@ class State:
 ```
 
 > My heuristic function will count the amount of the pairs of queens that attack each together (attack on row, column or diagonal). 
-> `If a queen isn't placed, it will account a pair attack` 
+> `If a queen isn't placed, it will account 2 pair attack. The less queens placed, the less prior the state will. It will run faster at many circumstances but sometimes it also make the algorithm slower ` 
 
 ```python
 class State:
@@ -90,7 +90,7 @@ class State:
         boardSize = len(self.board)
         for i in range(boardSize):
             if self.board[i] == -1:
-                attackPairs += 2
+                attackPairs += 1
 
             for j in range(i+1,boardSize):
                 if self.board[i] == -1 or self.board[j] == -1:
