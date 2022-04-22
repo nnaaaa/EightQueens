@@ -2,7 +2,7 @@ import pygame
 from typing import List
 from IO.chessBoard import ChessBoard
 from IO.queen import Queen
-from IO.button import Button
+from IO.button import Button,CenterButton,RightButton
 from Solver.index import QueenSolver
 from Position.index import Position
 from pygame import Surface
@@ -26,17 +26,17 @@ class Graphic:
 
     def display(self):
         pygame.init()
-        screen = pygame.display.set_mode((self.chessBoard.size*64,self.chessBoard.size*64 + 260))
+        screen = pygame.display.set_mode((self.chessBoard.size*self.chessBoard.tileSize,self.chessBoard.size*self.chessBoard.tileSize + 130))
         pygame.display.set_caption("8 queens")
         icon = pygame.image.load("IO/images/icon.png")
         pygame.display.set_icon(icon)
 
-        self.astarSolveButton = Button("Chose A*",[255, 255, 255],[22,135,204],8*32,8*64 + 10,100,30)
-        self.satSolveButton = Button("Chose SAT",[255, 255, 255],[22,135,204],8*32,8*64 + 50,100,30)
-        self.solvedButton = Button("Solved",[255, 255, 255],[22,135,204],8*32,8*64 + 90,100,30)
-        self.cannotSolvedButton = Button("Can't be solved",[255, 255, 255],[172,71,71],8*32,8*64 + 130,100,30)
-        self.startSolveButton = Button("Start solve",[255, 255, 255],[22,135,204],8*32,8*64 + 170,100,30)
-        self.choseFileButton = Button("Chose your input",[255, 255, 255],[22,135,204],8*32,8*64 + 210,100,30)
+        self.astarSolveButton = RightButton("Chose A*",self.chessBoard.size*self.chessBoard.tileSize - 10,self.chessBoard.size*self.chessBoard.tileSize + 10)
+        self.satSolveButton = RightButton("Chose SAT",self.chessBoard.size*self.chessBoard.tileSize - 10,self.chessBoard.size*self.chessBoard.tileSize + 50)
+        self.solvedButton = CenterButton("Solved",self.chessBoard.size*self.chessBoard.tileSize,self.chessBoard.size*self.chessBoard.tileSize + 10)
+        self.cannotSolvedButton = CenterButton("Can't be solved",self.chessBoard.size*self.chessBoard.tileSize,self.chessBoard.size*self.chessBoard.tileSize + 50)
+        self.startSolveButton = CenterButton("Start solve",self.chessBoard.size*self.chessBoard.tileSize,self.chessBoard.size*self.chessBoard.tileSize + 90)
+        self.choseFileButton = Button("Chose your input",10,self.chessBoard.size*self.chessBoard.tileSize + 10)
 
         
         while self.isRunning:

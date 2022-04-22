@@ -59,7 +59,7 @@ while True:
         satSolver.solve()
 
     if chose == "e":
-        initQueens = Queen.readQueenFromFile(8)
+        initQueens = Queen.readQueenFromFile(size)
         astarSolver = AStarSolver(initQueens)
         print("Solving ...")
         start = time.time()
