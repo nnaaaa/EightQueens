@@ -65,7 +65,7 @@ class Graphic:
                     if self.isStartSolve:
                         self.solver.solve()
 
-                    if self.isChosedSolver:
+                    if self.isChosedSolver and (not self.solver.isSolved and not self.solver.cannotSolved):
                         self.startSolveButton.display(screen)
 
                     if self.solver.cannotSolved:
