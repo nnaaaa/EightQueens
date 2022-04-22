@@ -53,7 +53,9 @@ class State:
             self.gvalue = 0
 ```
 
-> My heuristic function will count the amount of the pairs of queens that attack each together (attack on row, column or diagonal)
+> My heuristic function will count the amount of the pairs of queens that attack each together (attack on row, column or diagonal). 
+> `If a queen isn't placed, it will account a pair attack` 
+
 ```python
 class State:
     def __isSameDiagonal(self,firstQueen:Position,secondQueen:Position):
@@ -87,6 +89,9 @@ class State:
         attackPairs = 0
         boardSize = len(self.board)
         for i in range(boardSize):
+            if self.board[i] == -1:
+                attackPairs += 2
+
             for j in range(i+1,boardSize):
                 if self.board[i] == -1 or self.board[j] == -1:
                     continue
@@ -101,9 +106,9 @@ class State:
         return attackPairs
 ```
 
-> To acquire successors, the state firstly find whether entire queens are placed or not.
-> If all of queens was placed, i will move queen around the board which not queen at that position 
-> If still queens wasn't placed, i will place queen with the same way i move the queen.
+> To acquire successors, I find out the position which is column that has no queen placed. 
+> At this position, i will consecutively place the queen row by row. 
+> If size of board is 8, the maximum number of successors will be 8.
 ```python
 class State:
     def action(self,currentQueen:int,value:int):
@@ -114,29 +119,14 @@ class State:
 
     def generateSuccessors(self,initPos,currentPos):
         successors:List[State] = []
-        boardSize = len(self.board)
+        boardSize = self.board.__len__()
 
-        #move queen when entire queens placed
-        if not -1 in self.board:
-            for j in range(boardSize*boardSize):
-                if j+1 in self.board:
-                    continue
-                successor = self.action(currentPos,j+1)
-                successors.append(successor)
-
-            currentPos += 1
-            if currentPos == boardSize:
-                currentPos = initPos
-
-        #any queens haven't placed in the board yet
-        else:
-            for i in range(boardSize):
-                if self.board[i] == -1:
-                    for j in range(boardSize*boardSize):
-                        if j+1 in self.board:
-                            continue
-                        successor = self.action(i,j+1)
-                        successors.append(successor)
+        for i in range(boardSize):
+            if self.board[i] == -1:
+                for j in range(boardSize):
+                    pos = Position(i,j)
+                    successor = self.action(i,Position.getPosIn1DArray(pos,boardSize))
+                    successors.append(successor)
 
         return successors
 ```

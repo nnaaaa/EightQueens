@@ -7,7 +7,9 @@ from IO.chessBoard import ChessBoard
 from IO.queen import Queen
 from Solver.sat.Clauses.index import Level
 from Position.index import Position
-from os import environ
+import time
+
+
 # This is fixed size. If you changed this size, the graphic would display unexpectedly
 size = 8
 # Entire classes which created by me
@@ -60,8 +62,12 @@ while True:
         initQueens = Queen.readQueenFromFile(8)
         astarSolver = AStarSolver(initQueens)
         print("Solving ...")
+        start = time.time()
         while not astarSolver.isSolved:
             astarSolver.solve()
+        end = time.time()
+        print("Solving time:",end - start)
+        
 
     if chose == "f":
         chessBoard = ChessBoard(size)
