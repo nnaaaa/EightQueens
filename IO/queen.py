@@ -15,13 +15,13 @@ class Queen:
     def readQueenFromFile(sizeBoard:int,filename = "input.txt"):
         f = open(filename,"r")
         numberOfQueens = int(f.readline())
-        queens = [-1 for i in range(sizeBoard - numberOfQueens)]
+        queens = [-1 for i in range(sizeBoard)]
         locationList = f.read().split()
         for i in range(len(locationList)):
             location = locationList[i].split(',')
             x = int(location[0].strip('('))
             y = int(location[1].strip(')'))
             pos = Position(x,y)
-            queens.insert(0,Position.getPosIn1DArray(pos,sizeBoard))
+            queens[x] = Position.getPosIn1DArray(pos,sizeBoard)
 
         return queens

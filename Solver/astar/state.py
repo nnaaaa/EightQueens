@@ -29,24 +29,24 @@ class State:
 
         #move queen when entire queens placed
         if not -1 in self.board:
-            for j in range(boardSize*boardSize):
-                if j+1 in self.board:
-                    continue
-                successor = self.action(currentPos,j+1)
-                successors.append(successor)
+            print("Do nothing")
+            # for j in range(boardSize):
+            #     if j+1 in self.board:
+            #         continue
+            #     successor = self.action(currentPos,j+1)
+            #     successors.append(successor)
 
-            currentPos += 1
-            if currentPos == boardSize:
-                currentPos = initPos
+            # currentPos += 1
+            # if currentPos == boardSize:
+            #     currentPos = initPos
 
         #any queens haven't placed in the board yet
         else:
             for i in range(boardSize):
                 if self.board[i] == -1:
-                    for j in range(boardSize*boardSize):
-                        if j+1 in self.board:
-                            continue
-                        successor = self.action(i,j+1)
+                    for j in range(boardSize):
+                        pos = Position(j,i)
+                        successor = self.action(i,Position.getPosIn1DArray(pos,boardSize))
                         successors.append(successor)
 
         return successors
